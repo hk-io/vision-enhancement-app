@@ -28,7 +28,7 @@ The application provides four primary functions:
 - **Backend/API:** Node.js, Express, tRPC
 - **External service:** Google Cloud Vision API (server-integrated)
 
-## Reproducibility (Minimal)
+## Reproducibility
 
 ```bash
 pnpm install

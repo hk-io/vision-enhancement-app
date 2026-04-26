@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>ClearVision – Vision Enhancement App</title>
+    <script>
+      console.log("About to load opencv.js...");
+    </script>
+    <script async src="https://docs.opencv.org/4.10.0/opencv.js" type="text/javascript"></script>
+    <script>
+      console.log("opencv.js script tag added to DOM");
+    </script>    
+    <!-- Atkinson Hyperlegible font for accessibility (low vision readers) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- OpenCV.js for CLAHE enhancement - Loaded dynamically by React app -->
+    <!-- TensorFlow.js for Zero-DCE++ Phase 2 enhancement -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl@4.22.0"></script>
+    <script>
+      async function onTensorFlowReady() {
+        try {
+          await tf.setBackend('webgl');
+          console.log('TensorFlow.js ready with WebGL backend');
+          window.tfReady = true;
+        } catch (error) {
+          console.warn('WebGL backend not available, trying CPU:', error);
+          await tf.setBackend('cpu');
+          console.log('TensorFlow.js ready with CPU backend');
+          window.tfReady = true;
+        }
+      }
+      if (window.tf) {
+        onTensorFlowReady();
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <!-- OpenCV WASM initialization is handled by the React app -->
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      console.log('🚀 Vision Enhancement App starting...');
+    </script>
+    <script
+      defer
+      src="%VITE_ANALYTICS_ENDPOINT%/umami"
+      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+  </body>
+
+</html>

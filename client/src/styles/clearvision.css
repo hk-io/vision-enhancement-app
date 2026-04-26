@@ -1,0 +1,90 @@
+/**
+ * ClearVision theme — typography helpers + motion (colors mostly via Tailwind in components).
+ */
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Lexend+Mega:wght@700;800&display=swap");
+
+:root {
+  --cv-bg: #0a0e2a;
+  --cv-surface: #111530;
+  --cv-surface2: #1a1f3d;
+  --cv-accent: #ffd600;
+  --cv-text-dim: rgba(255, 255, 255, 0.55);
+  --cv-btn-magnify: #0d47a1;
+  --cv-btn-read: #1b5e20;
+  --cv-btn-describe: #311b92;
+  /**
+   * Vision camera overlay — classic ClearVision gold (same as --cv-accent).
+   */
+  --cv-vision-gold: var(--cv-accent);
+  --cv-vision-top-border: rgb(255 214 0 / 0.55);
+  --cv-vision-top-bg: rgb(255 214 0 / 0.16);
+  --cv-vision-top-bg-hover: rgb(255 214 0 / 0.28);
+  --cv-vision-speak-on: rgb(255 214 0 / 0.38);
+  --cv-vision-enh-border: rgb(255 214 0 / 0.4);
+  --cv-vision-ar-frozen-border: rgb(255 214 0 / 0.25);
+}
+
+.cv-font {
+  font-family: Lexend, system-ui, sans-serif;
+}
+
+.cv-font-mega {
+  font-family: "Lexend Mega", Lexend, system-ui, sans-serif;
+}
+
+@keyframes cv-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 8px rgba(255, 214, 0, 0.1), 0 0 40px rgba(255, 214, 0, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(255, 214, 0, 0.15), 0 0 80px rgba(255, 214, 0, 0.45);
+  }
+}
+
+@keyframes cv-fade-up {
+  from {
+    transform: translateY(28px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes cv-slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.cv-welcome-glow {
+  animation: cv-glow 3s ease-in-out infinite;
+}
+
+.cv-animate-fade-up {
+  animation: cv-fade-up 0.75s ease both;
+}
+
+.cv-sheet-animate {
+  animation: cv-slide-up 0.3s ease both;
+}
+
+.cv-welcome-radial::before {
+  content: "";
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 0, 0.1) 0%, transparent 68%);
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -52%);
+  pointer-events: none;
+}

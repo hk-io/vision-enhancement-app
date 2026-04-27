@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the accompanying thesis."
+authors:
+  - family-names: Khatab
+    given-names: Hend
+title: "Vision Enhancement App"
+type: software
+repository-code: "https://github.com/hkh-tech/vision-enhancement-app"
+license: MIT
+date-released: 2026-04

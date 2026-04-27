@@ -1,44 +1,57 @@
 # Vision Enhancement App
 
-This repository contains the implementation of a thesis prototype for low-vision assistance.  
-The system integrates real-time camera enhancement, text support workflows, and scene description in a browser-based application.
+A web-based multimodal visual augmentation prototype for low-vision users. It combines real-time contrast enhancement, AR text overlay, OCR with audio output, and AI-assisted scene description in a single zero-installation browser interface.
 
-## System Description
+This repository accompanies the Master's thesis:
+**Khatab, H. (2026). Visual Augmentation and Multimodal Assistive Technology for People with Low Vision: A Literature-Driven Design Study. Tampere University / Tallinn University / Lusofona University.**
 
-The application provides four primary functions:
+## Submission state
 
-- **Contrast Enhancement:** adaptive real-time enhancement of the camera feed.
-- **Smart Text AR:** freeze-frame OCR overlays for detected text regions.
-- **Smart Read:** full-screen document-style OCR reading with search and speech support.
-- **Smart Scene:** natural-language scene description from a captured image.
+The state of this repository at thesis submission is preserved as the git tag `thesis-submission-v1`.
+To view that exact state:
 
-## Computational Architecture
+```bash
+git checkout thesis-submission-v1
+```
 
-- **On-device processing (browser):**
-  - OpenCV.js enhancement pipeline
-  - Tesseract.js OCR for Smart Read
-  - TensorFlow.js + Transformers.js inference for Smart Scene
-- **Server-side processing:**
-  - Google Cloud Vision OCR for Smart Text AR
+## Key dependencies
 
-## Technical Stack
+Pinned versions are in `package.json` and the lockfile. Submission-state versions:
 
-- **Frontend:** React, TypeScript, Vite, Tailwind CSS
-- **Vision and OCR:** OpenCV.js, Tesseract.js, TensorFlow.js, COCO-SSD, Transformers.js
-- **Backend/API:** Node.js, Express, tRPC
-- **External service:** Google Cloud Vision API (server-integrated)
+- `opencv-js-wasm` `5.0.0-alpha` - CLAHE via WebAssembly-compiled OpenCV
+- `@tensorflow/tfjs` `4.22.0` + `@tensorflow/tfjs-backend-webgl` `4.22.0` - TensorFlow.js runtime for Zero-DCE++ inference
+- `@tensorflow-models/coco-ssd` `2.2.3` - pre-trained object detection
+- `@xenova/transformers` `2.17.2` - Transformers.js loading SmolVLM-256M-Instruct
+- `tesseract.js` `7.0.0` - on-device OCR with LSTM engine
 
-## Reproducibility
+## Installation and running
 
 ```bash
 pnpm install
 pnpm dev
-pnpm check
 pnpm build
+pnpm test
 ```
 
-Environment variables are required for server-side OCR services and should be configured locally or in deployment environments.
+## Repository structure
+
+```text
+client/                 Frontend source code (React + TypeScript)
+server/                 Backend and API routes (Express + tRPC)
+shared/                 Shared types and utilities
+drizzle/                Database schema and migration config
+patches/                Package patches applied by pnpm
+public/                 Static assets
+```
 
 ## License
 
-MIT
+MIT License - see `LICENSE`.
+
+## Citing this work
+
+If you use this code, please cite:
+
+> Khatab, H. (2026). Visual Augmentation and Multimodal Assistive Technology for People with Low Vision: A Literature-Driven Design Study. Master's thesis, Tampere University / Tallinn University / Lusofona University.
+
+A `CITATION.cff` file is included for citation tooling.

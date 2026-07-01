@@ -62,40 +62,40 @@ export default function TextAROverlay({ canvasRef, detectedRegions, textClusters
 
   // Use filtered clustered objects if available, otherwise fall back to individual regions
   const boxesToDraw = filteredClusters.length > 0 ? filteredClusters : detectedRegions.filter(r => !r.text.startsWith('text_') && r.text.trim().length > 1);
-  console.log(`🎨 TextAROverlay: Using ${filteredClusters.length > 0 ? 'clustered' : 'individual'} regions - ${boxesToDraw.length} boxes to draw (filtered from ${textClusters.length} clusters, excluded ${excludeBoxes.length} boxes)`);
+  console.log(`TextAROverlay: Using ${filteredClusters.length > 0 ? 'clustered' : 'individual'} regions - ${boxesToDraw.length} boxes to draw (filtered from ${textClusters.length} clusters, excluded ${excludeBoxes.length} boxes)`);
   if (boxesToDraw.length > 0) {
     if (textClusters.length > 0) {
-      console.log('  Clusters:', textClusters.map(c => ({ id: c.id, text: c.text.join(', ') })));
+      console.log('Clusters:', textClusters.map(c => ({ id: c.id, text: c.text.join(', ') })));
     } else {
-      console.log('  Individual texts:', (boxesToDraw as DetectedTextRegion[]).map(r => r.text).join(', '));
+      console.log('Individual texts:', (boxesToDraw as DetectedTextRegion[]).map(r => r.text).join(', '));
     }
   }
 
   useEffect(() => {
-    console.log(`🎨 TextAROverlay useEffect: isEnabled=${isEnabled}, boxes=${boxesToDraw.length}`);
+    console.log(`TextAROverlay useEffect: isEnabled=${isEnabled}, boxes=${boxesToDraw.length}`);
     if (!isEnabled || !canvasRef.current || !overlayCanvasRef.current) {
-      console.log(`🎨 TextAROverlay: Skipping draw - isEnabled=${isEnabled}, canvasRef=${!!canvasRef.current}, overlayCanvasRef=${!!overlayCanvasRef.current}`);
+      console.log(`TextAROverlay: Skipping draw - isEnabled=${isEnabled}, canvasRef=${!!canvasRef.current}, overlayCanvasRef=${!!overlayCanvasRef.current}`);
       return;
     }
 
     const canvas = overlayCanvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
-      console.log('🎨 TextAROverlay: Failed to get canvas context');
+      console.log('TextAROverlay: Failed to get canvas context');
       return;
     }
 
     // Match canvas size to main canvas
     canvas.width = canvasRef.current.width;
     canvas.height = canvasRef.current.height;
-    console.log(`📊 Overlay canvas resized to: ${canvas.width}x${canvas.height}`);
+    console.log(`Overlay canvas resized to: ${canvas.width}x${canvas.height}`);
 
     // Calculate display scale - account for CSS scaling
     const mainCanvas = canvasRef.current;
     const displayRect = mainCanvas.getBoundingClientRect();
     const scaleX = displayRect.width / mainCanvas.width;
     const scaleY = displayRect.height / mainCanvas.height;
-    console.log(`📐 Scale: ${scaleX.toFixed(2)}x${scaleY.toFixed(2)} (internal: ${mainCanvas.width}x${mainCanvas.height}, display: ${displayRect.width.toFixed(0)}x${displayRect.height.toFixed(0)})`);
+    console.log(`Scale: ${scaleX.toFixed(2)}x${scaleY.toFixed(2)} (internal: ${mainCanvas.width}x${mainCanvas.height}, display: ${displayRect.width.toFixed(0)}x${displayRect.height.toFixed(0)})`);
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -120,8 +120,8 @@ export default function TextAROverlay({ canvasRef, detectedRegions, textClusters
       ctx.fillStyle = 'rgba(0, 255, 0, 0.15)';
       ctx.fillRect(scaledX, scaledY, scaledWidth, scaledHeight);
 
-      // Draw "📖 Text" button instead of full text
-      const buttonText = '📖 Text';
+      // Draw "Text" button instead of full text
+      const buttonText = 'Text';
       ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
       ctx.font = 'bold 16px Arial';
       const buttonWidth = ctx.measureText(buttonText).width;
@@ -132,10 +132,10 @@ export default function TextAROverlay({ canvasRef, detectedRegions, textClusters
       if (textClusters.length > 0) {
         const cluster = item as TextCluster;
         const clusterText = Array.isArray(cluster.text) ? cluster.text.join(', ') : cluster.text;
-        console.log(`  📦 Cluster ${idx+1} (id=${cluster.id}): "${clusterText}" at [${box.x}, ${box.y}, ${box.width}x${box.height}]`);
+        console.log(`Cluster ${idx+1} (id=${cluster.id}): "${clusterText}" at [${box.x}, ${box.y}, ${box.width}x${box.height}]`);
       } else {
         const region = item as DetectedTextRegion;
-        console.log(`  📦 Box ${idx+1}: "${region.text}" at [${box.x}, ${box.y}, ${box.width}x${box.height}]`);
+        console.log(`Box ${idx+1}: "${region.text}" at [${box.x}, ${box.y}, ${box.width}x${box.height}]`);
       }
     });
 
@@ -159,7 +159,7 @@ export default function TextAROverlay({ canvasRef, detectedRegions, textClusters
       return;
     }
     
-    console.log(`✅ TextAROverlay: Drawing ${boxesToDraw.length} boxes (green)`);
+    console.log(`TextAROverlay: Drawing ${boxesToDraw.length} boxes (green)`);
 
   }, [isEnabled, boxesToDraw, textClusters, canvasRef]);
 
@@ -198,13 +198,13 @@ export default function TextAROverlay({ canvasRef, detectedRegions, textClusters
         originalY >= box.y &&
         originalY <= box.y + box.height
       ) {
-        console.log(`✅ Clicked region: "${region.text}"`);
+        console.log(`Clicked region: "${region.text}"`);
         setSelectedText(region.text);
         return;
       }
     }
 
-    console.log('❌ Click missed all regions');
+    console.log('Click missed all regions');
   };
 
   return (

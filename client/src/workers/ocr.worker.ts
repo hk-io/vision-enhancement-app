@@ -17,10 +17,10 @@ async function initializeWorker() {
   try {
     worker = await Tesseract.createWorker('eng');
     isInitialized = true;
-    console.log('✅ OCR Worker initialized');
+    console.log('OCR Worker initialized');
     self.postMessage({ type: 'initialized', success: true });
   } catch (error) {
-    console.error('❌ Failed to initialize OCR worker:', error);
+    console.error('Failed to initialize OCR worker:', error);
     self.postMessage({ type: 'initialized', success: false, error: String(error) });
   }
 }
@@ -48,7 +48,7 @@ self.onmessage = async (event: MessageEvent) => {
       const text = result.data.text.trim();
       const confidence = result.data.confidence;
 
-      console.log(`✅ OCR result for region ${id}: "${text}" (confidence: ${confidence})`);
+      console.log(`OCR result for region ${id}: "${text}" (confidence: ${confidence})`);
       
       self.postMessage({
         type: 'result',
@@ -58,7 +58,7 @@ self.onmessage = async (event: MessageEvent) => {
         success: true
       });
     } catch (error) {
-      console.error('❌ OCR recognition error:', error);
+      console.error('OCR recognition error:', error);
       self.postMessage({
         type: 'result',
         id: data.id,
@@ -75,7 +75,7 @@ self.onmessage = async (event: MessageEvent) => {
       await worker.terminate();
       worker = null;
       isInitialized = false;
-      console.log('✅ OCR Worker terminated');
+      console.log('OCR Worker terminated');
     }
   }
 };

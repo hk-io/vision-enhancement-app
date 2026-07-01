@@ -80,7 +80,7 @@ export const WebXRAROverlay: React.FC<WebXRAROverlayProps> = ({ isActive, onClos
     ctx.font = 'bold 24px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('🔍 ZOOM', canvas.width / 2, canvas.height / 2);
+    ctx.fillText('ZOOM', canvas.width / 2, canvas.height / 2);
   };
 
   if (!isActive) return null;
@@ -92,7 +92,7 @@ export const WebXRAROverlay: React.FC<WebXRAROverlayProps> = ({ isActive, onClos
 
         {!isSupported ? (
           <div className="text-red-600 mb-4">
-            ⚠️ WebXR is not supported on this device. Using standard magnifier view.
+            WebXR is not supported on this device. Using standard magnifier view.
           </div>
         ) : (
           <div className="mb-4">
@@ -101,7 +101,7 @@ export const WebXRAROverlay: React.FC<WebXRAROverlayProps> = ({ isActive, onClos
               disabled={isARActive}
               className="bg-blue-500 text-white px-6 py-2 rounded font-bold hover:bg-blue-600 disabled:bg-gray-400"
             >
-              {isARActive ? '🔴 AR Active' : '▶️ Start AR View'}
+              {isARActive ? 'AR Active' : 'Start AR View'}
             </button>
           </div>
         )}

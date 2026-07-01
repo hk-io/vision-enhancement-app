@@ -4,7 +4,7 @@
  * Displays detected objects with:
  * - Blue bounding boxes
  * - Object labels (e.g., "Book", "Keyboard")
- * - "📖 Text" button if text is detected
+ * - " Text" button if text is detected
  * - Click handlers for text display
  */
 
@@ -87,7 +87,7 @@ export default function ObjectOverlay({
 
       // Draw text button if text is detected
       if (obj.hasText) {
-        const buttonText = '📖 Text';
+        const buttonText = 'Text';
         const buttonWidth = ctx.measureText(buttonText).width;
         const buttonHeight = 24;
         const buttonX = scaledX + scaledWidth - buttonWidth - 12;
@@ -162,7 +162,7 @@ export default function ObjectOverlay({
 
           const ctx = canvas.getContext('2d');
           if (ctx) {
-            const buttonText = '📖 Text';
+            const buttonText = 'Text';
             const buttonWidth = ctx.measureText(buttonText).width;
             const buttonHeight = 24;
             const buttonX = scaledX + scaledWidth - buttonWidth - 12;
@@ -180,7 +180,7 @@ export default function ObjectOverlay({
             ) {
               // Text button clicked
               if (obj.textContent) {
-                console.log(`📖 Text button clicked for object ${i + 1} (${obj.class}): "${obj.textContent.substring(0, 50)}..."`);
+                console.log(`Text button clicked for object ${i + 1} (${obj.class}): "${obj.textContent.substring(0, 50)}..."`);
                 onObjectTextClick(obj.textContent);
               } else if (obj.textLoading) {
                 console.log(`Object ${i + 1} (${obj.class}): Text still loading...`);
@@ -250,7 +250,7 @@ export default function ObjectOverlay({
 
           const ctx = canvas.getContext('2d');
           if (ctx) {
-            const buttonText = '📖 Text';
+            const buttonText = 'Text';
             const buttonWidth = ctx.measureText(buttonText).width;
             const buttonHeight = 24;
             const buttonX = scaledX + scaledWidth - buttonWidth - 12;

@@ -62,7 +62,7 @@ export function ARTextOverlay({
 
     // Prevent division by zero
     if (videoWidth === 0 || videoHeight === 0 || displayWidth === 0 || displayHeight === 0) {
-      console.warn('⚠️ Dimensions not ready:', { videoWidth, videoHeight, displayWidth, displayHeight });
+      console.warn('Dimensions not ready:', { videoWidth, videoHeight, displayWidth, displayHeight });
       setOverlayDivs([]);
       return;
     }
@@ -88,9 +88,9 @@ export function ARTextOverlay({
       offsetY = (displayHeight - scaledHeight) / 2;
     }
 
-    console.log('🎯 Display scaling:', { scale, offsetX, offsetY, displayWidth, displayHeight });
-    console.log('📦 Processing', textBoxes.length, 'text boxes');
-    console.log('📝 Sample boxes:', textBoxes.slice(0, 3).map(box => ({
+    console.log('Display scaling:', { scale, offsetX, offsetY, displayWidth, displayHeight });
+    console.log('Processing', textBoxes.length, 'text boxes');
+    console.log('Sample boxes:', textBoxes.slice(0, 3).map(box => ({
       text: box.text.substring(0, 20),
       coords: { x: box.x, y: box.y, width: box.width, height: box.height },
     })));

@@ -120,10 +120,10 @@ def initialize_model():
         _model.load_state_dict(state_dict)
         _model.to(_device)
         _model.eval()
-        print('✅ Zero-DCE++ model loaded successfully from', model_path)
+        print(' Zero-DCE++ model loaded successfully from', model_path)
         return True
     except Exception as e:
-        print(f'❌ Failed to load model from {model_path}: {e}')
+        print(f' Failed to load model from {model_path}: {e}')
         return False
 
 
@@ -187,5 +187,5 @@ def enhance_image_base64(image_base64: str, strength: float = 1.0) -> str:
         return enhanced_base64
     
     except Exception as e:
-        print(f'❌ Enhancement error: {e}')
+        print(f' Enhancement error: {e}')
         raise

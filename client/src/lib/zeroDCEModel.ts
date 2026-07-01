@@ -44,32 +44,32 @@ export async function loadZeroDCEModel(): Promise<void> {
   modelLoading = true;
   
   try {
-    console.log('⏳ Phase 2 (Zero-DCE++) loading model from ONNX...');
+    console.log('Phase 2 (Zero-DCE++) loading model from ONNX...');
     
     // Load the ONNX model from public directory using TensorFlow.js
     const modelUrl = 'file:///home/ubuntu/vision_enhancement_app/client/public/zero_dce_model.onnx';
     
-    console.log('📥 Fetching ONNX model file...');
+    console.log('Fetching ONNX model file...');
     const response = await fetch('/zero_dce_model.onnx');
     if (!response.ok) {
       throw new Error(`Failed to fetch ONNX model: ${response.status} ${response.statusText}`);
     }
     
     const modelBuffer = await response.arrayBuffer();
-    console.log(`✓ Model file loaded: ${(modelBuffer.byteLength / 1024).toFixed(2)} KB`);
+    console.log(`Model file loaded: ${(modelBuffer.byteLength / 1024).toFixed(2)} KB`);
     
     // For now, use a simplified Zero-DCE++ implementation
     // The actual model inference will be added once TensorFlow.js ONNX support is configured
     modelLoaded = true;
     modelLoading = false;
     
-    console.log('✅ Phase 2 (Zero-DCE++) model ready');
-    console.log('📊 Model outputs decimal values 0.0-1.0 (not integers)');
-    console.log('🔧 Using TensorFlow.js for inference');
+    console.log('Phase 2 (Zero-DCE++) model ready');
+    console.log('Model outputs decimal values 0.0-1.0 (not integers)');
+    console.log('Using TensorFlow.js for inference');
   } catch (error) {
     modelLoaded = false;
     modelLoading = false;
-    console.error('❌ Failed to load Zero-DCE++ model:', error);
+    console.error('Failed to load Zero-DCE++ model:', error);
     throw error;
   }
 }
@@ -156,7 +156,7 @@ export async function applyZeroDCEEnhancement(
     enhancedTensor.dispose();
 
     // Log for verification
-    console.log(`🎨 Zero-DCE++ applied (${level}: ${blendConfig.zeroDCEPercent}% blend)`);
+    console.log(`Zero-DCE++ applied (${level}: ${blendConfig.zeroDCEPercent}% blend)`);
   } catch (error) {
     console.warn('Zero-DCE++ enhancement error:', error);
   }
@@ -171,5 +171,5 @@ export function unloadZeroDCEModel(): void {
     model = null;
   }
   modelLoaded = false;
-  console.log('✓ Zero-DCE++ model unloaded');
+  console.log('Zero-DCE++ model unloaded');
 }

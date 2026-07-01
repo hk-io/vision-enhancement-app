@@ -22,21 +22,21 @@ export const ocrRouter = {
     )
     .mutation(async ({ input }) => {
       try {
-        console.log('🔍 OCR endpoint called with image size:', input.imageBase64.length);
-        console.log('📸 Image base64 first 50 chars:', input.imageBase64.substring(0, 50));
+        console.log('OCR endpoint called with image size:', input.imageBase64.length);
+        console.log('Image base64 first 50 chars:', input.imageBase64.substring(0, 50));
         const textRegions = await recognizeTextWithGoogleVision(input.imageBase64);
-        console.log('✅ OCR endpoint returning', textRegions.length, 'regions');
+        console.log('OCR endpoint returning', textRegions.length, 'regions');
         if (textRegions.length > 0) {
-          console.log('📝 First 3 regions:', JSON.stringify(textRegions.slice(0, 3)));
+          console.log('First 3 regions:', JSON.stringify(textRegions.slice(0, 3)));
         } else {
-          console.log('⚠️ WARNING: No regions returned from Google Vision!');
+          console.log('WARNING: No regions returned from Google Vision!');
         }
 
         // Return individual word bounding boxes (not clustered)
         // This allows tight navy backgrounds around each word, not entire clusters
-        console.log(`📦 Returning ${textRegions.length} individual word regions for tight AR overlays`);
+        console.log(`Returning ${textRegions.length} individual word regions for tight AR overlays`);
         if (textRegions.length > 0) {
-          console.log('📊 First 3 words:', textRegions.slice(0, 3).map(r => ({
+          console.log('First 3 words:', textRegions.slice(0, 3).map(r => ({
             text: r.text,
             box: r.box,
           })));
@@ -49,7 +49,7 @@ export const ocrRouter = {
           count: textRegions.length,
         };
       } catch (error) {
-        console.error('❌ OCR endpoint error:', error);
+        console.error('OCR endpoint error:', error);
         return {
           success: false,
           regions: [],

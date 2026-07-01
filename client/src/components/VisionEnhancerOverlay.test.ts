@@ -29,7 +29,7 @@ describe('Enhancement Preset Toggle Feature', () => {
       };
 
       expect(DEFAULT_SETTINGS.contrastLevel).toBe('none');
-      console.log('✅ Default enhancement is "none"');
+      console.log('Default enhancement is "none"');
     });
 
     it('should display raw video when enhancement is disabled', () => {
@@ -44,8 +44,8 @@ describe('Enhancement Preset Toggle Feature', () => {
       expect(shouldShowRawVideo).toBe(true);
       expect(shouldShowCanvas).toBe(false);
 
-      console.log('✅ Raw video displayed when enhancement is "none"');
-      console.log('✅ Canvas hidden when enhancement is "none"');
+      console.log('Raw video displayed when enhancement is "none"');
+      console.log('Canvas hidden when enhancement is "none"');
     });
   });
 
@@ -61,12 +61,12 @@ describe('Enhancement Preset Toggle Feature', () => {
       contrastLevel = 'low';
       expect(contrastLevel).not.toBe('none');
       expect(contrastLevel).toBe('low');
-      console.log('✅ ENABLE button switches to "low" enhancement');
+      console.log('ENABLE button switches to "low" enhancement');
 
       // User clicks NONE
       contrastLevel = 'none';
       expect(contrastLevel).toBe('none');
-      console.log('✅ NONE button switches back to "none"');
+      console.log('NONE button switches back to "none"');
     });
 
     it('should show level buttons only when enhancement is enabled', () => {
@@ -81,9 +81,9 @@ describe('Enhancement Preset Toggle Feature', () => {
         expect(shouldShowLevels).toBe(level !== 'none');
 
         if (shouldShowLevels) {
-          console.log(`✅ Level buttons shown when contrastLevel = "${level}"`);
+          console.log(`Level buttons shown when contrastLevel = "${level}"`);
         } else {
-          console.log(`✅ Level buttons hidden when contrastLevel = "${level}"`);
+          console.log(`Level buttons hidden when contrastLevel = "${level}"`);
         }
       });
     });
@@ -104,7 +104,7 @@ describe('Enhancement Preset Toggle Feature', () => {
       Object.entries(levels).forEach(([level, blendPercent]) => {
         expect(blendPercent).toBeGreaterThan(0);
         expect(blendPercent).toBeLessThanOrEqual(1);
-        console.log(`✅ ${level.toUpperCase()}: ${blendPercent * 100}% blend`);
+        console.log(`${level.toUpperCase()}: ${blendPercent * 100}% blend`);
       });
     });
 
@@ -117,7 +117,7 @@ describe('Enhancement Preset Toggle Feature', () => {
       const shouldShowLevelButtons = contrastLevel !== 'none';
 
       expect(shouldShowLevelButtons).toBe(false);
-      console.log('✅ Level buttons hidden when contrastLevel = "none"');
+      console.log('Level buttons hidden when contrastLevel = "none"');
     });
   });
 
@@ -142,8 +142,7 @@ describe('Enhancement Preset Toggle Feature', () => {
         expect(actualShowVideo).toBe(showVideo);
         expect(actualShowCanvas).toBe(showCanvas);
 
-        console.log(
-          `✅ contrastLevel="${contrastLevel}": ` +
+        console.log(`contrastLevel="${contrastLevel}": ` +
           `video=${actualShowVideo}, canvas=${actualShowCanvas}`
         );
       });
@@ -165,8 +164,8 @@ describe('Enhancement Preset Toggle Feature', () => {
       expect(cameraAutoStarted).toBe(true);
       expect(startButtonStillAvailable).toBe(true);
 
-      console.log('✅ Camera auto-starts on app mount');
-      console.log('✅ Start button still available as fallback');
+      console.log('Camera auto-starts on app mount');
+      console.log('Start button still available as fallback');
     });
   });
 
@@ -186,24 +185,24 @@ describe('Enhancement Preset Toggle Feature', () => {
         {
           issue: 'Camera startup delay (10+ seconds)',
           solution: 'Auto-start camera on component mount',
-          status: '✅',
+          status: 'ok',
         },
         {
           issue: 'Black screen on initial load',
           solution: 'Show raw video when enhancement is "none"',
-          status: '✅',
+          status: 'ok',
         },
         {
           issue: 'No option to disable enhancement',
           solution: 'Add "NONE" preset button with toggle UI',
-          status: '✅',
+          status: 'ok',
         },
       ];
 
       fixes.forEach(({ issue, solution, status }) => {
-        expect(status).toBe('✅');
+        expect(status).toBe('ok');
         console.log(`${status} ${issue}`);
-        console.log(`   → ${solution}`);
+        console.log(`→ ${solution}`);
       });
     });
   });

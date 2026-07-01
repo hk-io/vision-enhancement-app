@@ -249,13 +249,13 @@ export function applyPureJsEnhancement(
 
     // Log every 30 frames
     if (frameCounter % 30 === 0) {
-      console.log(`📊 Frame brightness: ${meanBrightness.toFixed(1)}`);
+      console.log(`Frame brightness: ${meanBrightness.toFixed(1)}`);
     }
 
     // Route to Zero-DCE++ if dark
     if (meanBrightness < 30) {
       if (frameCounter % 30 === 0) {
-        console.log(`🌙 Dark room detected (${meanBrightness.toFixed(1)} < 30)`);
+        console.log(`Dark room detected (${meanBrightness.toFixed(1)} < 30)`);
       }
       return { meanBrightness, isDarkRoom: true };
     }
@@ -278,12 +278,12 @@ export function applyPureJsEnhancement(
     ctx.putImageData(imageData, 0, 0);
 
     if (frameCounter % 30 === 0) {
-      console.log(`🎨 Pure JS - Level=${level} | Histogram=${config.histogramStrength} | Sharpen=${config.unsharpAmount} | Saturation=${config.saturationBoost}`);
+      console.log(`Pure JS - Level=${level} | Histogram=${config.histogramStrength} | Sharpen=${config.unsharpAmount} | Saturation=${config.saturationBoost}`);
     }
 
     return { meanBrightness, isDarkRoom: false };
   } catch (error) {
-    console.error('❌ Pure JS enhancement error:', error);
+    console.error('Pure JS enhancement error:', error);
     return { meanBrightness: 0, isDarkRoom: false };
   }
 }

@@ -9,7 +9,7 @@ import { trpc } from "./lib/trpc";
 
 
 // Debug logging
-console.log('🚀 Initializing tRPC client...');
+console.log('Initializing tRPC client...');
 import "./index.css";
 
 const queryClient = new QueryClient({
@@ -71,15 +71,15 @@ const trpcClient = trpc.createClient({
           signal: controller.signal,
         }).then(async (r) => {
           clearTimeout(timeoutId);
-          console.log('🟢 tRPC response status:', r.status);
+          console.log('tRPC response status:', r.status);
           if (!r.ok) {
             const text = await r.text();
-            console.error('🔴 tRPC error response:', r.status, text.substring(0, 500));
+            console.error('tRPC error response:', r.status, text.substring(0, 500));
           }
           return r;
         }).catch(e => {
           clearTimeout(timeoutId);
-          console.error('🔴 tRPC fetch error:', e.message || String(e));
+          console.error('tRPC fetch error:', e.message || String(e));
           throw e;
         });
       },
@@ -87,7 +87,7 @@ const trpcClient = trpc.createClient({
   ],
 });
 
-console.log('🚀 Rendering React app...');
+console.log('Rendering React app...');
 
 createRoot(document.getElementById("root")!).render(
   <trpc.Provider client={trpcClient} queryClient={queryClient}>

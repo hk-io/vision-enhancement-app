@@ -100,7 +100,7 @@ export function useEASTTextDetection(
 
   // Unfreeze the frame and return to live camera
   const unfreezeFrame = useCallback(() => {
-    console.log('🎬 Unfreezing camera - returning to live feed');
+    console.log('Unfreezing camera - returning to live feed');
     frozenFrameRef.current = null;
     setFrozenFrame(null);
     setEnhancedFrame(null);
@@ -112,7 +112,7 @@ export function useEASTTextDetection(
   const processFrame = useCallback(
     async (video: HTMLVideoElement) => {
       if (ocrProcessingRef.current) {
-        console.log('⏳ Already processing, skipping...');
+        console.log('Already processing, skipping...');
         return;
       }
 
@@ -124,7 +124,7 @@ export function useEASTTextDetection(
       try {
         ocrProcessingRef.current = true;
         setIsOCRProcessing(true);
-        console.log('🔄 Processing frame...');
+        console.log('Processing frame...');
 
         // Create canvas and freeze the current frame
         const canvas = document.createElement('canvas');
@@ -134,7 +134,7 @@ export function useEASTTextDetection(
         if (!ctx) throw new Error('Failed to get canvas context');
 
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        console.log('📸 Frame frozen at', canvas.width, 'x', canvas.height);
+        console.log('Frame frozen at', canvas.width, 'x', canvas.height);
 
         // Optionally apply contrast+edge enhancement to the frozen frame for OCR
         const ocrCanvas = enhanceCanvasForOcr(canvas);
@@ -145,9 +145,9 @@ export function useEASTTextDetection(
         setIsFrozen(true);
 
         // Send to Google Cloud Vision for text recognition
-        console.log('📡 Sending to Google Cloud Vision API...');
+        console.log('Sending to Google Cloud Vision API...');
         const imageBase64 = ocrCanvas.toDataURL('image/jpeg', 1.0).split(',')[1];
-        console.log(`📸 Image size: ${imageBase64.length} bytes`);
+        console.log(`Image size: ${imageBase64.length} bytes`);
 
         // Call API with 30 second timeout
         const timeoutPromise = new Promise((_, reject) =>
@@ -158,11 +158,11 @@ export function useEASTTextDetection(
           ocrMutation.mutateAsync({ imageBase64 }),
           timeoutPromise
         ]) as any;
-        console.log('✅ Google Vision response:', result);
+        console.log('Google Vision response:', result);
 
         // Use individual text regions directly (like Google Translate)
         if (result.success && result.regions && result.regions.length > 0) {
-          console.log(`✅ Received ${result.regions.length} text regions from Google Vision`);
+          console.log(`Received ${result.regions.length} text regions from Google Vision`);
           
           const greenBoxes = result.regions.map((region: any) => {
             // Handle both array (clustered) and string (raw) text formats
@@ -177,7 +177,7 @@ export function useEASTTextDetection(
             };
           });
           
-          console.log('📦 Regions:', greenBoxes.map((box: any, i: number) => ({
+          console.log('Regions:', greenBoxes.map((box: any, i: number) => ({
             index: i,
             text: typeof box.text === 'string' ? box.text.substring(0, 30) : 'N/A',
             box: box.box,
@@ -185,11 +185,11 @@ export function useEASTTextDetection(
           
           setDetectionBoxes(greenBoxes);
         } else {
-          console.log('⚠️ No text recognized by Google Cloud Vision');
+          console.log('No text recognized by Google Cloud Vision');
           setDetectionBoxes([]);
         }
       } catch (error) {
-        console.error('❌ Error processing frame:', error);
+        console.error('Error processing frame:', error);
         setDetectionBoxes([]);
       } finally {
         ocrProcessingRef.current = false;
@@ -205,7 +205,7 @@ export function useEASTTextDetection(
    */
   const reprocessFrozenFrame = useCallback(async () => {
     if (ocrProcessingRef.current) {
-      console.log("⏳ Already processing, skipping reprocess...");
+      console.log("Already processing, skipping reprocess...");
       return;
     }
 
@@ -217,11 +217,11 @@ export function useEASTTextDetection(
     try {
       ocrProcessingRef.current = true;
       setIsOCRProcessing(true);
-      console.log("🔄 Reprocessing frozen frame (canvas)...");
+      console.log(" Reprocessing frozen frame (canvas)...");
 
       const canvas = frozenFrameRef.current;
       if (!canvas || canvas.width === 0 || canvas.height === 0) {
-        console.warn("❌ No valid frozen frame to reprocess");
+        console.warn(" No valid frozen frame to reprocess");
         return;
       }
 
@@ -232,7 +232,7 @@ export function useEASTTextDetection(
       setFrozenFrame(ocrCanvas);
 
       const imageBase64 = ocrCanvas.toDataURL("image/jpeg", 1.0).split(",")[1];
-      console.log(`📡 Re-sending frozen image to Google Vision (${imageBase64.length} chars base64)...`);
+      console.log(`Re-sending frozen image to Google Vision (${imageBase64.length} chars base64)...`);
 
       const timeoutPromise = new Promise((_, reject) =>
         setTimeout(() => reject(new Error("Google Vision API timeout (30s)")), 30000)
@@ -242,7 +242,7 @@ export function useEASTTextDetection(
         ocrMutation.mutateAsync({ imageBase64 }),
         timeoutPromise,
       ])) as any;
-      console.log("✅ Google Vision response (reprocess):", result);
+      console.log(" Google Vision response (reprocess):", result);
 
       if (result.success && result.regions && result.regions.length > 0) {
         const greenBoxes = result.regions.map((region: any) => {
@@ -257,11 +257,11 @@ export function useEASTTextDetection(
         });
         setDetectionBoxes(greenBoxes);
       } else {
-        console.log("⚠️ No text recognized on reprocess");
+        console.log(" No text recognized on reprocess");
         setDetectionBoxes([]);
       }
     } catch (error) {
-      console.error("❌ Error reprocessing frozen frame:", error);
+      console.error(" Error reprocessing frozen frame:", error);
       setDetectionBoxes([]);
     } finally {
       ocrProcessingRef.current = false;

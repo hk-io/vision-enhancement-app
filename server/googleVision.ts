@@ -26,8 +26,8 @@ export async function recognizeTextWithGoogleVision(
   imageBase64: string
 ): Promise<TextRegion[]> {
   try {
-    console.log('🔄 Calling Google Cloud Vision REST API...');
-    console.log('📊 Image data size:', imageBase64.length, 'bytes');
+    console.log('Calling Google Cloud Vision REST API...');
+    console.log('Image data size:', imageBase64.length, 'bytes');
     
     const apiKey = process.env.GOOGLE_CLOUD_VISION_API_KEY;
     if (!apiKey) {
@@ -51,12 +51,12 @@ export async function recognizeTextWithGoogleVision(
       ],
     };
 
-    console.log('📡 Sending request to Google Cloud Vision REST API...');
+    console.log('Sending request to Google Cloud Vision REST API...');
     
     // Add timeout to prevent hanging
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
-      console.error('⏱️ Google Vision API timeout after 10 seconds');
+      console.error('Google Vision API timeout after 10 seconds');
       controller.abort();
     }, 10000);
     
@@ -79,35 +79,35 @@ export async function recognizeTextWithGoogleVision(
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('❌ API Error Response:', errorText);
+      console.error('API Error Response:', errorText);
       throw new Error(
         `Google Cloud Vision API error: ${response.status} - ${errorText}`
       );
     }
 
     const data = await response.json();
-    console.log('✅ API Response received');
+    console.log('API Response received');
     
     // Check for errors in response
     if (data.responses?.[0]?.error) {
-      console.error('❌ API returned error:', data.responses[0].error);
+      console.error('API returned error:', data.responses[0].error);
       const errorMsg = data.responses[0].error.message || 'Unknown error';
       throw new Error(`Google Vision API error: ${errorMsg}`);
     }
 
     const detections = data.responses?.[0]?.textAnnotations || [];
-    console.log('📝 Number of detections:', detections.length);
-    console.log('📝 Full API response:', JSON.stringify(data.responses?.[0], null, 2));
+    console.log('Number of detections:', detections.length);
+    console.log('Full API response:', JSON.stringify(data.responses?.[0], null, 2));
     
     // Debug: Log raw response
     if (detections.length === 0) {
-      console.log('⚠️ DEBUG: textAnnotations is empty');
-      console.log('⚠️ DEBUG: Full response keys:', Object.keys(data.responses?.[0] || {}));
-      console.log('⚠️ DEBUG: Full response:', JSON.stringify(data, null, 2));
+      console.log('DEBUG: textAnnotations is empty');
+      console.log('DEBUG: Full response keys:', Object.keys(data.responses?.[0] || {}));
+      console.log('DEBUG: Full response:', JSON.stringify(data, null, 2));
     }
 
     if (!detections.length) {
-      console.log('ℹ️ No text detected in image');
+      console.log('No text detected in image');
       return [];
     }
 
@@ -167,18 +167,18 @@ export async function recognizeTextWithGoogleVision(
       })
       .filter((region: any): region is TextRegion => region !== null);
 
-    console.log(`✅ Recognized ${textRegions.length} text regions`);
-    console.log('📝 Sample regions:', textRegions.slice(0, 3).map(r => r.text));
+    console.log(`Recognized ${textRegions.length} text regions`);
+    console.log('Sample regions:', textRegions.slice(0, 3).map(r => r.text));
     return textRegions;
   } catch (error) {
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
-        console.error('❌ Google Cloud Vision API timeout');
+        console.error('Google Cloud Vision API timeout');
         throw new Error('Google Vision API timeout - please try again');
       }
-      console.error('❌ Google Cloud Vision error:', error.message);
+      console.error('Google Cloud Vision error:', error.message);
     } else {
-      console.error('❌ Google Cloud Vision error:', error);
+      console.error('Google Cloud Vision error:', error);
     }
     throw error;
   }

@@ -60,9 +60,9 @@ describe('useTwoPhaseEnhancement - Critical Bug Fix', () => {
       expect(clahePixels[0]).toBe(150);   // CLAHE is bright (150)
       expect(originalPixels[0]).not.toBe(clahePixels[0]);
       
-      console.log('✅ Original image captured before CLAHE');
-      console.log(`   Original pixel value: ${originalPixels[0]}`);
-      console.log(`   CLAHE pixel value: ${clahePixels[0]}`);
+      console.log('Original image captured before CLAHE');
+      console.log(`Original pixel value: ${originalPixels[0]}`);
+      console.log(`CLAHE pixel value: ${clahePixels[0]}`);
     });
 
     it('should send original image to Zero-DCE++, not CLAHE-enhanced', () => {
@@ -91,9 +91,9 @@ describe('useTwoPhaseEnhancement - Critical Bug Fix', () => {
       expect(originalBase64.length).toBeGreaterThan(0);
       expect(claheBase64.length).toBeGreaterThan(0);
       
-      console.log('✅ Original and CLAHE base64 are different');
-      console.log(`   Original base64 length: ${originalBase64.length}`);
-      console.log(`   CLAHE base64 length: ${claheBase64.length}`);
+      console.log('Original and CLAHE base64 are different');
+      console.log(`Original base64 length: ${originalBase64.length}`);
+      console.log(`CLAHE base64 length: ${claheBase64.length}`);
     });
   });
 
@@ -134,9 +134,9 @@ describe('useTwoPhaseEnhancement - Critical Bug Fix', () => {
         );
         expect(result).toBe(expectedResult);
         
-        console.log(`✅ ${level.toUpperCase()}: ${blendPercent * 100}% blend`);
-        console.log(`   Original: ${originalPixel}, Enhanced: ${enhancedPixel}`);
-        console.log(`   Result: ${result} (${((result - originalPixel) / (enhancedPixel - originalPixel) * 100).toFixed(0)}% of range)`);
+        console.log(`${level.toUpperCase()}: ${blendPercent * 100}% blend`);
+        console.log(`Original: ${originalPixel}, Enhanced: ${enhancedPixel}`);
+        console.log(`Result: ${result} (${((result - originalPixel) / (enhancedPixel - originalPixel) * 100).toFixed(0)}% of range)`);
       });
     });
 
@@ -158,10 +158,10 @@ describe('useTwoPhaseEnhancement - Critical Bug Fix', () => {
       expect(BLEND_PERCENTAGES.medium).toBe(0.60);
       expect(BLEND_PERCENTAGES.high).toBe(0.90);
       
-      console.log('✅ Blend percentages are correct:');
-      console.log(`   LOW: ${BLEND_PERCENTAGES.low * 100}%`);
-      console.log(`   MEDIUM: ${BLEND_PERCENTAGES.medium * 100}%`);
-      console.log(`   HIGH: ${BLEND_PERCENTAGES.high * 100}%`);
+      console.log('Blend percentages are correct:');
+      console.log(`LOW: ${BLEND_PERCENTAGES.low * 100}%`);
+      console.log(`MEDIUM: ${BLEND_PERCENTAGES.medium * 100}%`);
+      console.log(`HIGH: ${BLEND_PERCENTAGES.high * 100}%`);
     });
   });
 
@@ -185,8 +185,8 @@ describe('useTwoPhaseEnhancement - Critical Bug Fix', () => {
       // When base64 decoded, PNG files start with: 89 50 4E 47 (hex) = iVBORw0K (base64)
       expect(pngBase64.startsWith('iVBORw0K')).toBe(true);
       
-      console.log('✅ Using PNG format for lossless quality');
-      console.log(`   PNG base64 starts with: ${pngBase64.substring(0, 8)}`);
+      console.log('Using PNG format for lossless quality');
+      console.log(`PNG base64 starts with: ${pngBase64.substring(0, 8)}`);
     });
   });
 
@@ -196,28 +196,28 @@ describe('useTwoPhaseEnhancement - Critical Bug Fix', () => {
        * BEFORE FIX (WRONG):
        * 1. Draw video to canvas
        * 2. Apply CLAHE to canvas (modifies in-place)
-       * 3. Capture canvas as base64 → Send to Zero-DCE++ ❌ (CLAHE-enhanced)
+       * 3. Capture canvas as base64 → Send to Zero-DCE++  (CLAHE-enhanced)
        * 4. Blend Zero-DCE++ output with CLAHE canvas
        * Result: Zero-DCE++ receives dark input, produces dark output
        * 
        * AFTER FIX (CORRECT):
        * 1. Draw video to canvas
-       * 2. Capture ORIGINAL canvas as base64 → Send to Zero-DCE++ ✅
+       * 2. Capture ORIGINAL canvas as base64 → Send to Zero-DCE++ 
        * 3. Apply CLAHE to canvas for immediate display
        * 4. Blend Zero-DCE++ output with original frame
        * Result: Zero-DCE++ receives original input, produces bright output
        */
       
       const fixes = [
-        { aspect: 'Capture original BEFORE CLAHE', status: '✅' },
-        { aspect: 'Send original to Zero-DCE++', status: '✅' },
-        { aspect: 'Blend with original (not CLAHE)', status: '✅' },
-        { aspect: 'Use PNG format (lossless)', status: '✅' },
-        { aspect: 'Correct blend percentages (30%/60%/90%)', status: '✅' },
+        { aspect: 'Capture original BEFORE CLAHE', status: 'ok' },
+        { aspect: 'Send original to Zero-DCE++', status: 'ok' },
+        { aspect: 'Blend with original (not CLAHE)', status: 'ok' },
+        { aspect: 'Use PNG format (lossless)', status: 'ok' },
+        { aspect: 'Correct blend percentages (30%/60%/90%)', status: 'ok' },
       ];
       
       fixes.forEach(fix => {
-        expect(fix.status).toBe('✅');
+        expect(fix.status).toBe('');
         console.log(`${fix.status} ${fix.aspect}`);
       });
     });

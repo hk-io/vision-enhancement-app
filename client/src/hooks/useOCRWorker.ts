@@ -32,11 +32,11 @@ export function useOCRWorker(onResult: (result: OCRResult) => void) {
 
         if (type === 'initialized') {
           isInitializedRef.current = data.success;
-          console.log('✅ OCR Worker ready');
+          console.log('OCR Worker ready');
         } else if (type === 'result') {
           onResult(event.data);
         } else if (type === 'error') {
-          console.error('❌ OCR Worker error:', event.data.message);
+          console.error('OCR Worker error:', event.data.message);
         }
       };
 
@@ -51,14 +51,14 @@ export function useOCRWorker(onResult: (result: OCRResult) => void) {
         }
       };
     } catch (error) {
-      console.error('❌ Failed to create OCR worker:', error);
+      console.error('Failed to create OCR worker:', error);
     }
   }, [onResult]);
 
   // Function to recognize text from image data
   const recognizeText = useCallback((imageData: ImageData, regionId: number) => {
     if (!workerRef.current || !isInitializedRef.current) {
-      console.log('⚠️ OCR Worker not ready');
+      console.log('OCR Worker not ready');
       return;
     }
 

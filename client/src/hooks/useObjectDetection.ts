@@ -40,19 +40,19 @@ export function useObjectDetection() {
 
     const initializeModel = async () => {
       try {
-        console.log('🤖 Initializing TensorFlow.js backend...');
+        console.log('Initializing TensorFlow.js backend...');
         await tf.ready();
-        console.log('✅ TensorFlow.js backend ready');
+        console.log('TensorFlow.js backend ready');
         
-        console.log('🤖 Loading COCO-SSD model...');
+        console.log('Loading COCO-SSD model...');
         const model = await cocoSsd.load();
         if (isMounted) {
           modelRef.current = model;
-          console.log('✅ COCO-SSD model loaded successfully');
+          console.log('COCO-SSD model loaded successfully');
         }
       } catch (err) {
         const error = err as Error;
-        console.error('❌ Failed to load COCO-SSD model:', error);
+        console.error('Failed to load COCO-SSD model:', error);
         if (isMounted) {
           setState(prev => ({
             ...prev,
@@ -86,7 +86,7 @@ export function useObjectDetection() {
 
     try {
       setState(prev => ({ ...prev, isLoading: true, error: null }));
-      console.log('🔍 Detecting objects...');
+      console.log('Detecting objects...');
 
       const predictions = await modelRef.current.detect(imageElement);
 
@@ -100,7 +100,7 @@ export function useObjectDetection() {
         }))
         .sort((a: DetectedObject, b: DetectedObject) => b.score - a.score); // Sort by confidence
 
-      console.log(`✅ Detected ${detectedObjects.length} objects:`, 
+      console.log(`Detected ${detectedObjects.length} objects:`, 
         detectedObjects.map((o: DetectedObject) => `${o.class} (${(o.score * 100).toFixed(0)}%)`).join(', ')
       );
 
@@ -113,7 +113,7 @@ export function useObjectDetection() {
       return detectedObjects;
     } catch (err) {
       const error = err as Error;
-      console.error('❌ Object detection failed:', error);
+      console.error('Object detection failed:', error);
       setState(prev => ({
         ...prev,
         error: `Detection failed: ${error.message}`,

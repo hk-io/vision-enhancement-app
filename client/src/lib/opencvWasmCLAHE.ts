@@ -20,13 +20,13 @@ export async function initializeOpenCVWasm(): Promise<void> {
       
       if (cv && cv.createCLAHE && cv.Mat && cv.cvtColor) {
         cvReady = true;
-        console.log('✓ OpenCV.js loaded successfully with CLAHE support');
+        console.log('OpenCV.js loaded successfully with CLAHE support');
         resolve();
       } else if (attempts < maxAttempts) {
         attempts++;
         setTimeout(checkCV, 500);
       } else {
-        console.warn('⚠ OpenCV.js not available after 5 seconds - enhancement disabled');
+        console.warn('OpenCV.js not available after 5 seconds - enhancement disabled');
         resolve(); // Resolve anyway to not block the app
       }
     };
@@ -95,7 +95,7 @@ export async function applyCLAHEToCanvas(
     result.delete();
     clahe.delete();
   } catch (error) {
-    console.error('✗ Error applying CLAHE:', error);
+    console.error('Error applying CLAHE:', error);
   }
 }
 
@@ -152,7 +152,7 @@ export async function applyCLAHEWithBrightnessToCanvas(
     result.delete();
     clahe.delete();
   } catch (error) {
-    console.error('✗ Error applying CLAHE with brightness:', error);
+    console.error('Error applying CLAHE with brightness:', error);
   }
 }
 

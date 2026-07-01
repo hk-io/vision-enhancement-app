@@ -77,7 +77,7 @@ export function useCamera() {
       const canSwitch = await checkMultipleCameras();
       
       streamRef.current = stream;
-      console.log('📹 Stream obtained, waiting for video element');
+      console.log('Stream obtained, waiting for video element');
       
       // Set state - camera is ready
       setState({
@@ -150,7 +150,7 @@ export function useCamera() {
    */
   useEffect(() => {
     if (videoRef.current && streamRef.current && state.hasPermission) {
-      console.log('📹 Video element ready, attaching stream');
+      console.log('Video element ready, attaching stream');
       videoRef.current.srcObject = streamRef.current;
       videoRef.current.play().catch(err => {
         console.error('Failed to play video:', err);

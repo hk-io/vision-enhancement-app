@@ -676,7 +676,7 @@ export default function VisionEnhancerOverlay() {
         confidence: box.confidence,
       }));
 
-      console.log(`🔄 Syncing ${textBoxes.length} detection boxes to AR overlay`);
+      console.log(`Syncing ${textBoxes.length} detection boxes to AR overlay`);
       setArTextBoxes(textBoxes);
 
       // Also populate all detected text for extraction modal
@@ -813,21 +813,21 @@ export default function VisionEnhancerOverlay() {
    * Handle AR button click - freeze frame and process for text detection
    */
   const handleARClick = useCallback(async () => {
-    console.log("🔍 AR BUTTON CLICKED");
+    console.log(" AR BUTTON CLICKED");
     speakUiHint("Scanning for text");
 
     try {
       if (!isFrozen && videoRef.current) {
-        console.log("⏳ Processing frame...");
+        console.log("Processing frame...");
         await processFrame(videoRef.current);
-        console.log("✅ Frame processing complete");
+        console.log(" Frame processing complete");
         speakUiHint("A R scan finished");
       }
 
-      console.log("🔄 Activating AR overlay...");
+      console.log(" Activating AR overlay...");
       setShowAROverlay(true);
     } catch (error) {
-      console.error("❌ Error in AR mode:", error);
+      console.error(" Error in AR mode:", error);
       speakUiHint("A R scan failed");
     }
   }, [isFrozen, processFrame, speakUiHint]);
@@ -836,7 +836,7 @@ export default function VisionEnhancerOverlay() {
    * Handle reprocess button - reprocess the frozen frame
    */
   const handleReprocessClick = useCallback(async () => {
-    console.log("🔄 REPROCESS BUTTON CLICKED");
+    console.log(" REPROCESS BUTTON CLICKED");
     // While AR is frozen, <video> is unmounted — must OCR the frozen canvas, not videoRef.
     try {
       if (!isFrozen) {
@@ -844,9 +844,9 @@ export default function VisionEnhancerOverlay() {
         return;
       }
       await reprocessFrozenFrame();
-      console.log("✅ Reprocessing complete");
+      console.log(" Reprocessing complete");
     } catch (error) {
-      console.error("❌ Error reprocessing:", error);
+      console.error(" Error reprocessing:", error);
     }
   }, [isFrozen, reprocessFrozenFrame]);
 
@@ -854,7 +854,7 @@ export default function VisionEnhancerOverlay() {
    * Handle close AR - return to live camera
    */
   const handleCloseAR = useCallback(() => {
-    console.log("❌ Closing AR mode");
+    console.log(" Closing AR mode");
     speakUiHint("Closed A R");
     setShowAROverlay(false);
     unfreezeFrame();
@@ -1429,7 +1429,7 @@ export default function VisionEnhancerOverlay() {
    */
   const handleTextClick = useCallback(
     (text: string) => {
-    console.log("📝 Text clicked:", text);
+    console.log(" Text clicked:", text);
       if (speakUiEnabled && text.trim()) {
         window.speechSynthesis.cancel();
         speakText(text.trim());
@@ -1683,7 +1683,7 @@ export default function VisionEnhancerOverlay() {
             {settings.contrastLevel !== "none" && (
               <div className="hidden max-w-[200px] gap-1 overflow-x-auto text-[10px] font-mono text-white/90 sm:flex sm:max-w-none">
                 <span className="whitespace-nowrap rounded bg-black/50 px-1.5 py-1">
-                  <span className="text-[#FFD600]">✓</span> {settings.contrastLevel} · {pipelineDisplay.branch}
+                  <span className="text-[#FFD600]">·</span> {settings.contrastLevel} · {pipelineDisplay.branch}
                 </span>
                 <span
                   className="whitespace-nowrap rounded bg-black/50 px-1.5 py-1"
@@ -2501,13 +2501,13 @@ export default function VisionEnhancerOverlay() {
                 </div>
                 <p className="mb-2 text-[0.88rem] leading-relaxed text-white">
                   Use the bottom <strong className="text-white">Enhancement</strong> strip to choose Off, Mild, Medium, or
-                  Strong for the <strong className="text-white">live camera</strong>. While it is on, OpenCV.js applies{" "}
+                  Strong for the <strong className="text-white">live camera</strong>. While active, OpenCV.js applies{" "}
                   <strong className="text-white">CLAHE</strong> for local contrast, an <strong className="text-white">unsharp</strong>{" "}
-                  mask on brightness for crisper edges, and in very dark scenes adds <strong className="text-white">Retinex</strong>{" "}
-                  for shadow detail. <strong className="text-white">Mode</strong> (Auto, Bright, Dim, Dark) follows average
-                  brightness or locks to a branch you prefer. The same controls appear on the <strong className="text-white">upload</strong>{" "}
-                  screen for that photo only. Everything here runs locally and is separate from Google Vision, Tesseract, and
-                  the optional Zero-DCE++ toggle on uploads.
+                  mask on brightness for clearer edges, and in very dark scenes adds <strong className="text-white">Retinex</strong>{" "}
+                  to recover shadow detail. <strong className="text-white">Mode</strong> (Auto, Bright, Dim, Dark) can follow
+                  scene brightness automatically or stay locked to the branch you prefer. The same controls are available on
+                  <strong className="text-white"> uploaded photos</strong> for that photo only. This pipeline runs locally and
+                  is separate from Smart Text OCR, Smart Read OCR, and the optional upload-only Zero-DCE++ toggle.
                 </p>
                 <div className="text-[0.75rem] font-bold uppercase tracking-wider text-[#FFD600]">Technique</div>
                 <p className="mt-1 text-[0.82rem] leading-relaxed text-white">
@@ -2523,12 +2523,12 @@ export default function VisionEnhancerOverlay() {
                   </div>
                   <div className="text-base font-bold">Smart Text</div>
                 </div>
-              <p className="mb-2 text-[0.88rem] leading-relaxed text-white">
-                  Tap once and the app <strong className="text-white">freezes what the camera sees right now</strong>, sends
-                  that still image to your server, then paints a bold label on each word it finds. If Enhancement is on, the
-                  same contrast and edge settings are applied to that snapshot before OCR. Change Enhancement while frozen,
-                  then tap <strong className="text-white">Reprocess</strong> to run recognition again. For long passages, search,
-                  and read-aloud in a full-screen reader, use <strong className="text-white">Smart Read</strong> instead.
+                <p className="mb-2 text-[0.88rem] leading-relaxed text-white">
+                  Tap once and the app <strong className="text-white">freezes the current view</strong>, sends that still image
+                  to the server, then draws a bold label on each detected word. If Enhancement is on, the same contrast and edge
+                  settings are applied to the frozen snapshot before OCR. You can adjust Enhancement while frozen, then tap{" "}
+                  <strong className="text-white">Reprocess</strong> to run OCR again. For long paragraphs, search, and full-page
+                  read-aloud, use <strong className="text-white">Smart Read</strong>.
                 </p>
                 <div className="text-[0.75rem] font-bold uppercase tracking-wider text-[#FFD600]">Technique</div>
               <p className="mt-1 text-[0.82rem] leading-relaxed text-white">
@@ -2544,14 +2544,14 @@ export default function VisionEnhancerOverlay() {
                   </div>
                   <div className="text-base font-bold">Smart Read</div>
                 </div>
-              <p className="mb-2 text-[0.88rem] leading-relaxed text-white">
-                  When you tap Smart Read, the app grabs <strong className="text-white">one clear snapshot</strong> (with a
-                  short loading state), runs <strong className="text-white">Tesseract.js</strong> entirely on your device, and
-                  opens a full-screen reader. Text is split into sentences with highlighting; matches light up when you{" "}
-                  <strong className="text-white">search</strong> (type or use voice). Use the reader&apos;s{" "}
-                  <strong className="text-white">Read</strong> button for speech—no need to turn on the top-bar speech toggle
-                  first. This path never runs <strong className="text-white">Zero-DCE++</strong>; the optional AI low-light
-                  boost stays on <strong className="text-white">uploaded</strong> photos only.
+                <p className="mb-2 text-[0.88rem] leading-relaxed text-white">
+                  When you tap Smart Read, the app captures <strong className="text-white">one clear snapshot</strong> (with a
+                  short loading state), runs <strong className="text-white">Tesseract.js</strong> fully on-device, and opens a
+                  full-screen reader. Text is split into sentences with highlighting; search matches light up when you{" "}
+                  <strong className="text-white">search</strong> (typing or voice). Use the reader&apos;s{" "}
+                  <strong className="text-white">Read</strong> button for speech; the top-bar speech toggle is not required.
+                  Smart Read does not use <strong className="text-white">Zero-DCE++</strong>; that optional low-light boost stays
+                  in the <strong className="text-white">upload</strong> flow.
                 </p>
                 <div className="text-[0.75rem] font-bold uppercase tracking-wider text-[#FFD600]">Technique</div>
               <p className="mt-1 text-[0.82rem] leading-relaxed text-white">
@@ -2568,14 +2568,13 @@ export default function VisionEnhancerOverlay() {
                   <div className="text-base font-bold">Smart Scene</div>
                 </div>
                 <p className="mb-2 text-[0.88rem] leading-relaxed text-white">
-                  You get <strong className="text-white">one still picture</strong>—not a live minute-by-minute feed—from the{" "}
-                  <strong className="text-white">camera</strong> or from the <strong className="text-white">upload</strong>{" "}
-                  preview. After a few moments of on-device work, a panel opens with a longer, plain-language description. The
-                  pipeline stays in the browser: <strong className="text-white">COCO-SSD</strong> lists likely objects, then{" "}
-                  <strong className="text-white">SmolVLM</strong> (Transformers.js) turns the image plus that list into text; if
-                  SmolVLM cannot load, <strong className="text-white">vit-gpt2 image captioning</strong> fills in with the same
-                  hints. You can have the description read aloud from the panel. <strong className="text-white">Zero-DCE++</strong>{" "}
-                  is not used here.
+                  Smart Scene uses <strong className="text-white">one still image</strong> (not a continuous live feed) from the{" "}
+                  <strong className="text-white">camera</strong> or <strong className="text-white">upload</strong> preview. After
+                  on-device processing, a panel opens with a natural-language scene summary. The browser pipeline combines{" "}
+                  <strong className="text-white">COCO-SSD</strong> object hints with{" "}
+                  <strong className="text-white">SmolVLM</strong> text generation; if SmolVLM is unavailable,{" "}
+                  <strong className="text-white">vit-gpt2 captioning</strong> is used as fallback. Descriptions can be read aloud
+                  in the panel. <strong className="text-white">Zero-DCE++</strong> is not part of Smart Scene.
                 </p>
                 <div className="text-[0.75rem] font-bold uppercase tracking-wider text-[#FFD600]">Technique</div>
               <p className="mt-1 text-[0.82rem] leading-relaxed text-white">
@@ -2591,16 +2590,15 @@ export default function VisionEnhancerOverlay() {
                   </div>
                   <div className="text-base font-bold">Upload</div>
                 </div>
-              <p className="mb-2 text-[0.88rem] leading-relaxed text-white">
+                <p className="mb-2 text-[0.88rem] leading-relaxed text-white">
                   Choose a photo from your device. The full-screen view has two independent controls:{" "}
                   <strong className="text-white">Contrast &amp; edges</strong> (Off/Mild/Medium/Strong) uses the same OpenCV.js
-                  path as live Enhancement. Below that, <strong className="text-white">Apply low-light boost</strong> is a{" "}
-                  <strong className="text-white">toggle</strong>: one tap applies Zero-DCE++ once on your contrast/edges
-                  preview; tap again to turn it off and restore contrast-only from the original file (it does not stack
-                  multiple AI passes). Best for dark photos; bright images may look washed out. If low-light boost is already
-                  on, changing Off/Mild/Medium/Strong <strong className="text-white">rebuilds contrast from the original</strong>{" "}
-                  and <strong className="text-white">re-applies</strong> the boost on top so order does not matter.{" "}
-                  <strong className="text-white">Smart Scene</strong> uses the scene pipeline above when this view is open.
+                  path as live Enhancement, and <strong className="text-white">Apply low-light boost</strong> is a{" "}
+                  <strong className="text-white">toggle</strong> for one-pass Zero-DCE++. Turning the toggle off restores the
+                  contrast-only result from the original file (boost is not stacked repeatedly). It usually helps dark photos;
+                  bright photos may look washed out. If boost is on and you change Off/Mild/Medium/Strong, the app rebuilds from
+                  the original and reapplies boost so results stay consistent regardless of order.{" "}
+                  <strong className="text-white">Smart Scene</strong> on uploads uses the same scene pipeline described above.
                 </p>
                 <div className="text-[0.75rem] font-bold uppercase tracking-wider text-[#FFD600]">Technique</div>
               <p className="mt-1 text-[0.82rem] leading-relaxed text-white">

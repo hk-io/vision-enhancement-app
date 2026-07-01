@@ -95,10 +95,10 @@ async function startServer() {
   );
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
-    console.log('🔧 Development mode - using Vite');
+    console.log('Development mode - using Vite');
     await setupVite(app, server);
   } else {
-    console.log('📦 Production mode - using static files');
+    console.log('Production mode - using static files');
     serveStatic(app);
   }
 
@@ -114,16 +114,16 @@ async function startServer() {
   server.listen(port, "0.0.0.0", () => {
     const localIp = getLocalIPv4();
     const appUrl = `${protocol}://${localIp ?? "<your-pc-ip>"}:${port}/`;
-    console.log(`🚀 Server running on ${protocol}://localhost:${port}/`);
-    console.log(`📱 App on your phone (same Wi-Fi, use HTTPS for camera): ${appUrl}`);
-    if (useHttps) console.log(`   (Accept the certificate warning on your phone to allow camera)`);
-    if (!localIp) console.log(`   (Find PC IP: run "ipconfig" on Windows, "ifconfig" on Mac/Linux)`);
-    console.log(`📡 REST API: ${protocol}://localhost:${port}/api/ocr/recognize`);
-    console.log(`🔄 tRPC API: ${protocol}://localhost:${port}/api/trpc`);
+    console.log(`Server running on ${protocol}://localhost:${port}/`);
+    console.log(`App on your phone (same Wi-Fi, use HTTPS for camera): ${appUrl}`);
+    if (useHttps) console.log(`(Accept the certificate warning on your phone to allow camera)`);
+    if (!localIp) console.log(`(Find PC IP: run "ipconfig" on Windows, "ifconfig" on Mac/Linux)`);
+    console.log(`REST API: ${protocol}://localhost:${port}/api/ocr/recognize`);
+    console.log(`tRPC API: ${protocol}://localhost:${port}/api/trpc`);
   });
 }
 
 startServer().catch(err => {
-  console.error('❌ Failed to start server:', err);
+  console.error('Failed to start server:', err);
   process.exit(1);
 });

@@ -44,7 +44,7 @@ async function enhanceImageWithZeroDCE(
       // Set timeout - if Python takes more than 60 seconds, kill it and return error
       const timeout = setTimeout(() => {
         timedOut = true;
-        console.error('⏱️ Python process timeout (60s)');
+        console.error('Python process timeout (60s)');
         python.kill('SIGKILL');
         reject(new Error('Enhancement timeout after 60 seconds - Python process killed'));
       }, 60000);
@@ -52,48 +52,48 @@ async function enhanceImageWithZeroDCE(
       python.stdout.on('data', (data) => {
         const chunk = data.toString();
         output += chunk;
-        console.log('📄 Python stdout chunk:', chunk.substring(0, 100));
+        console.log('Python stdout chunk:', chunk.substring(0, 100));
       });
 
       python.stderr.on('data', (data) => {
         const errorMsg = data.toString();
         errorOutput += errorMsg;
-        console.warn('🐍 Python stderr:', errorMsg.substring(0, 200));
+        console.warn('Python stderr:', errorMsg.substring(0, 200));
       });
 
       python.on('close', (code) => {
         clearTimeout(timeout);
         
         if (timedOut) {
-          console.error('⏱️ Process already timed out, ignoring close event');
+          console.error('Process already timed out, ignoring close event');
           return;
         }
         
         if (code !== 0) {
-          console.error('❌ Python exited with code', code);
-          console.error('❌ Full stderr:', errorOutput);
-          console.error('❌ Full stdout:', output);
+          console.error('Python exited with code', code);
+          console.error('Full stderr:', errorOutput);
+          console.error('Full stdout:', output);
           reject(new Error(`Enhancement failed with code ${code}: ${errorOutput || output}`));
           return;
         }
         
-        console.log('✅ Python process completed successfully (code 0)');
+        console.log('Python process completed successfully (code 0)');
 
         try {
-          console.log('📋 Parsing Python output...');
+          console.log('Parsing Python output...');
           const result = JSON.parse(output);
           if (result.success) {
-            console.log('✅ Zero-DCE++ enhancement complete');
-            console.log('📊 Enhanced image size:', Math.round(result.enhanced_image.length / 1024), 'KB');
+            console.log('Zero-DCE++ enhancement complete');
+            console.log('Enhanced image size:', Math.round(result.enhanced_image.length / 1024), 'KB');
             resolve(result.enhanced_image);
           } else {
-            console.error('❌ Python returned error:', result.error);
+            console.error('Python returned error:', result.error);
             reject(new Error(result.error || 'Enhancement failed'));
           }
         } catch (e) {
-          console.error('❌ Failed to parse Python output');
-          console.error('❌ Output was:', output.substring(0, 200));
-          console.error('❌ Parse error:', e);
+          console.error('Failed to parse Python output');
+          console.error('Output was:', output.substring(0, 200));
+          console.error('Parse error:', e);
           reject(new Error('Invalid enhancement response'));
         }
       });
@@ -107,7 +107,7 @@ async function enhanceImageWithZeroDCE(
       );
       python.stdin.end();
     } catch (error) {
-      console.error('❌ Error spawning Python:', error);
+      console.error('Error spawning Python:', error);
       reject(error);
     }
   });
@@ -118,7 +118,7 @@ export const enhancementRouter = {
   test: publicProcedure
     .input(z.object({ message: z.string() }))
     .mutation(async ({ input }) => {
-      console.log('🧪 Test endpoint called with:', input.message);
+      console.log('Test endpoint called with:', input.message);
       return {
         success: true,
         message: `Test received: ${input.message}`,
@@ -135,27 +135,27 @@ export const enhancementRouter = {
     )
     .mutation(async ({ input }) => {
       try {
-        console.log('🎎 Enhancement endpoint called');
-        console.log('📊 Image size:', Math.round(input.imageBase64.length / 1024), 'KB');
-        console.log('📊 Strength:', input.strength);
-        console.log('📊 Image base64 starts with:', input.imageBase64.substring(0, 50));
+        console.log('Enhancement endpoint called');
+        console.log('Image size:', Math.round(input.imageBase64.length / 1024), 'KB');
+        console.log('Strength:', input.strength);
+        console.log('Image base64 starts with:', input.imageBase64.substring(0, 50));
         
         // Call real Zero-DCE++ model
-        console.log('🔠 Calling enhanceImageWithZeroDCE...');
+        console.log('Calling enhanceImageWithZeroDCE...');
         const enhancedBase64 = await enhanceImageWithZeroDCE(input.imageBase64, input.strength);
-        console.log('📊 Enhanced image size:', Math.round(enhancedBase64.length / 1024), 'KB');
+        console.log('Enhanced image size:', Math.round(enhancedBase64.length / 1024), 'KB');
         
         return {
           success: true,
           enhancedImage: enhancedBase64,
         };
       } catch (error) {
-        console.error('❌ Enhancement error:', error);
-        console.error('❌ Error message:', error instanceof Error ? error.message : String(error));
-        console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack');
+        console.error('Enhancement error:', error);
+        console.error('Error message:', error instanceof Error ? error.message : String(error));
+        console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
         
         // Return original on error
-        console.log('⚠️ Returning original image as fallback');
+        console.log('Returning original image as fallback');
         return {
           success: false,
           enhancedImage: input.imageBase64,

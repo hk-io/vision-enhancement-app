@@ -49,7 +49,7 @@ export function useHybridDetection() {
         const errorMsg = isModelLoading 
           ? 'Object detection model is still loading... Please wait a moment and try again.'
           : 'Object detection model failed to load';
-        console.error('❌', errorMsg);
+        console.error('', errorMsg);
         setState(prev => ({
           ...prev,
           error: errorMsg,
@@ -64,11 +64,11 @@ export function useHybridDetection() {
           error: null,
         }));
 
-        console.log('🔄 Hybrid detection: Step 1 - Detecting objects...');
+        console.log('Hybrid detection: Step 1 - Detecting objects...');
         const detectedObjects = await detectObjects(canvas);
 
         if (detectedObjects.length === 0) {
-          console.log('⚠️ No objects detected');
+          console.log('No objects detected');
           setState(prev => ({
             ...prev,
             objects: [],
@@ -77,7 +77,7 @@ export function useHybridDetection() {
           return;
         }
 
-        console.log(`✅ Step 1 complete: ${detectedObjects.length} objects detected`);
+        console.log(`Step 1 complete: ${detectedObjects.length} objects detected`);
 
         // Initialize objects with text loading state
         const objectsWithText: DetectedObjectWithText[] = detectedObjects.map(obj => ({
@@ -92,7 +92,7 @@ export function useHybridDetection() {
         }));
 
         // Step 2: Extract and recognize text for each object
-        console.log('🔄 Hybrid detection: Step 2 - Extracting text from each object...');
+        console.log('Hybrid detection: Step 2 - Extracting text from each object...');
 
         const processObjectText = async (obj: DetectedObject, index: number) => {
           try {
@@ -121,7 +121,7 @@ export function useHybridDetection() {
             // Convert to JPEG and send to Google Vision
             const imageData = objectCanvas.toDataURL('image/jpeg', 0.8);
 
-            console.log(`  📦 Object ${index + 1} (${obj.class}): Sending to Google Vision...`);
+            console.log(`Object ${index + 1} (${obj.class}): Sending to Google Vision...`);
 
             // Call OCR endpoint
             const result = await ocrMutation.mutateAsync({
@@ -142,9 +142,9 @@ export function useHybridDetection() {
               .join('\n') // Join clusters with newlines
               .trim();
 
-            console.log(`  ✅ Object ${index + 1} (${obj.class}): Text recognized (${textContent.length} chars)`);
+            console.log(`Object ${index + 1} (${obj.class}): Text recognized (${textContent.length} chars)`);
             if (textContent.length > 0) {
-              console.log(`     Text preview: "${textContent.substring(0, 100)}${textContent.length > 100 ? '...' : ''}"`);
+              console.log(`Text preview: "${textContent.substring(0, 100)}${textContent.length > 100 ? '...' : ''}"`);
             }
 
             return {
@@ -154,7 +154,7 @@ export function useHybridDetection() {
             };
           } catch (err) {
             const error = err as Error;
-            console.error(`  ❌ Object ${index + 1} (${obj.class}): ${error.message}`);
+            console.error(`Object ${index + 1} (${obj.class}): ${error.message}`);
             return {
               hasText: false,
               textLoading: false,
@@ -184,7 +184,7 @@ export function useHybridDetection() {
           });
         }
 
-        console.log(`✅ Step 2 complete: Text extracted from all objects`);
+        console.log(`Step 2 complete: Text extracted from all objects`);
         console.log('Summary:', finalObjects.map(o => ({
           class: o.class,
           hasText: o.hasText,
@@ -198,7 +198,7 @@ export function useHybridDetection() {
         }));
       } catch (err) {
         const error = err as Error;
-        console.error('❌ Hybrid detection failed:', error);
+        console.error('Hybrid detection failed:', error);
         setState(prev => ({
           ...prev,
           error: error.message,
